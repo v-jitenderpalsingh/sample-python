@@ -1,18 +1,48 @@
-name: Test
+name: Test setup-python Architecture Cache Issue
 
-on: [workflow_dispatch]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  run-main:
-    runs-on: ubuntu-latest
+  test-python-x86:
+    runs-on: windows-2025
+    name: "Setup Python x86"
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
-
-      - name: Set up Python
+      - uses: actions/checkout@v6
+      
+      - name: Setup Python with x86 architecture
         uses: actions/setup-python@v6
         with:
-          python-version: '3.14'
-
-      - name: Run main.py
-        run: python main.py
+          python-version: '3.11'
+          architecture: 'x86'
+          cache: 'pip'
+      
+      - name: Display cache key info
+        run: |
+          echo "RUNNER_OS: ${{ runner.os }}"
+          python --version
+          python -c "import platform; print(f'Architecture: {platform.machine()}')"
+      
+      - name: Create requirements.txt
+        run: echo "requests==2.31.0" > requirements.txt
+  
+  test-python-x64:
+    runs-on: windows-2025
+    name: "Setup Python x64"
+    steps:
+      - uses: actions/checkout@v6
+      
+      - name: Setup Python with x64 architecture
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          architecture: 'x64'
+          cache: 'pip'
+      
+      - name: Display cache key info
+        run: |
+          echo "RUNNER_OS: ${{ runner.os }}"
+          python --version
+          python -c "import platform; print(f'Architecture: {platform.machine()}')"
+      
+      - name: Create requirements.txt
+        run: echo "requests==2.31.0" > requirements.txt
