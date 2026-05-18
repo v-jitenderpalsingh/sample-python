@@ -22,8 +22,14 @@ jobs:
           python --version
           python -c "import platform; print(f'Architecture: {platform.machine()}')"
       
-      - name: Create requirements.txt
-        run: echo "requests==2.31.0" > requirements.txt
+      - name: Verify requirements.txt exists
+        run: |
+          if (Test-Path requirements.txt) {
+            Write-Host "requirements.txt found"
+            Get-Content requirements.txt
+          } else {
+            Write-Host "requirements.txt not found"
+          }
   
   test-python-x64:
     runs-on: windows-2025
@@ -44,5 +50,11 @@ jobs:
           python --version
           python -c "import platform; print(f'Architecture: {platform.machine()}')"
       
-      - name: Create requirements.txt
-        run: echo "requests==2.31.0" > requirements.txt
+      - name: Verify requirements.txt exists
+        run: |
+          if (Test-Path requirements.txt) {
+            Write-Host "requirements.txt found"
+            Get-Content requirements.txt
+          } else {
+            Write-Host "requirements.txt not found"
+          }
