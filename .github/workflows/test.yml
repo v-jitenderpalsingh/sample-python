@@ -1,6 +1,6 @@
 name: Test setup-python Architecture Cache Issue
 
-on: [push, pull_request, workflow_dispatch]
+on: [pull_request, workflow_dispatch]
 
 jobs:
   test-python-x86:
