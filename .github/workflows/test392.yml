@@ -1,7 +1,6 @@
 name: repro-setup-python-root-warning
 
-on:
-  push:
+on: [workflow_dispatch]
 
 jobs:
   repro:
