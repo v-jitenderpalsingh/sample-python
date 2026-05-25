@@ -1,10 +1,10 @@
 name: "Matrix CI - GH Runners"
 
 on:
-  pull_request:
-  push:
-  schedule:
-    - cron: "0 1 * * SUN"
+  # pull_request:
+  # push:
+  # schedule:
+  #   - cron: "0 1 * * SUN"
   workflow_dispatch:
 
 concurrency:
