@@ -1,5 +1,5 @@
 name: Test run
-on: [pull_request, workflow_dispatch]
+on: [push, workflow_dispatch]
 jobs:
   test-python:
     runs-on: ${{ matrix.os }}
