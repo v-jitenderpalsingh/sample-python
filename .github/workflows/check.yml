@@ -1,0 +1,31 @@
+name: Test fetchValidManifest
+on: [push, workflow_dispatch]
+
+jobs:
+  fetch-manifest:
+    name: ${{ matrix.os }} / Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    env:
+      ACTIONS_STEP_DEBUG: true
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.10.0', '3.11.0']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python (forces manifest fetch)
+        id: setup
+        uses: priyagupta108/setup-python@fix/manifest-fetch-1318
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Verify resolved version
+        shell: bash
+        run: |
+          echo "Resolved: ${{ steps.setup.outputs.python-version }}"
+          python -c "import sys; print(sys.version)"
+          test "${{ steps.setup.outputs.python-version }}" = "${{ matrix.python-version }}"
