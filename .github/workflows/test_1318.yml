@@ -76,21 +76,21 @@ jobs:
       - name: Run main script
         run: python main.py
     
-    test-empty-files:
-      runs-on: ${{ matrix.os }}
-      strategy:
-        fail-fast: false
-        matrix:
-          os: [ubuntu-latest, windows-latest, macos-latest]
+  test-empty-files:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
       
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v6
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
         
-        - name: Set up Python
-          uses: v-jitenderpalsingh/setup-python@test-1318
-          with:
-            python-version: '3.14.3'
+      - name: Set up Python
+        uses: v-jitenderpalsingh/setup-python@test-1318
+        with:
+          python-version: '3.14.3'
       
-        - name: Run main script
-          run: python main.py
+      - name: Run main script
+        run: python main.py
