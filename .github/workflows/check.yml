@@ -1,31 +1,62 @@
-name: Test fetchValidManifest
-on: [push, workflow_dispatch]
+name: Test fetchValidManifest (transient failure)
+
+on:
+  workflow_dispatch:
 
 jobs:
-  fetch-manifest:
-    name: ${{ matrix.os }} / Python ${{ matrix.python-version }}
-    runs-on: ${{ matrix.os }}
+  retry-recovers:
+    name: API blackout, expect retry to recover
+    runs-on: ubuntu-latest
     env:
       ACTIONS_STEP_DEBUG: true
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.10.0', '3.11.0']
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - name: Setup Python (forces manifest fetch)
+      # Block api.github.com by pointing it to a loopback that drops :443.
+      # Attempt #1 fails immediately (connection refused). fetchValidManifest
+      # sleeps 1s, attempt #2 fails, it sleeps 2s. We restore DNS at t=2.5s
+      # so attempt #3 succeeds — exercising the retry-with-backoff branch
+      # WITHOUT falling through to the raw-URL source.
+      - name: Start blackout (api.github.com -> 127.0.0.1)
+        run: |
+          echo "127.0.0.1 api.github.com" | sudo tee -a /etc/hosts
+          # Schedule restore in the background.
+          ( sleep 2.5 && sudo sed -i '/127\.0\.0\.1 api\.github\.com/d' /etc/hosts && echo "RESTORED at $(date +%T.%N)" ) &
+          echo "BLOCKED  at $(date +%T.%N)"
+
+      - name: Setup Python (force manifest fetch)
         id: setup
         uses: priyagupta108/setup-python@fix/manifest-fetch-1318
         with:
-          python-version: ${{ matrix.python-version }}
+          # Pick a patch unlikely to be pre-installed, so getManifest() runs.
+          python-version: '3.10.0'
 
-      - name: Verify resolved version
-        shell: bash
+      - name: Verify it actually installed
         run: |
-          echo "Resolved: ${{ steps.setup.outputs.python-version }}"
+          test "${{ steps.setup.outputs.python-version }}" = "3.10.0"
           python -c "import sys; print(sys.version)"
-          test "${{ steps.setup.outputs.python-version }}" = "${{ matrix.python-version }}"
+  
+  retry-exhausted-falls-back-to-url:
+    name: API permanently down, expect raw-URL fallback
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_STEP_DEBUG: true
+    steps:
+      - uses: actions/checkout@v6
+
+      # Keep api.github.com unreachable for the whole run. fetchValidManifest
+      # will burn all 3 attempts on the API source, getManifest() catches the
+      # error and falls back to raw.githubusercontent.com (still reachable).
+      - name: Permanent API blackout
+        run: echo "127.0.0.1 api.github.com" | sudo tee -a /etc/hosts
+
+      - name: Setup Python (must use URL fallback)
+        id: setup
+        uses: priyagupta108/setup-python@fix/manifest-fetch-1318
+        with:
+          python-version: '3.10.0'
+
+      - name: Verify install succeeded via fallback
+        run: |
+          test "${{ steps.setup.outputs.python-version }}" = "3.10.0"
+          python -c "import sys; print(sys.version)"
