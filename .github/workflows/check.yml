@@ -29,7 +29,7 @@ jobs:
         uses: priyagupta108/setup-python@fix/manifest-fetch-1318
         with:
           # Pick a patch unlikely to be pre-installed, so getManifest() runs.
-          python-version: '3.10.0'
+          python-version: '3.14'
 
       - name: Verify it actually installed
         run: |
@@ -54,7 +54,7 @@ jobs:
         id: setup
         uses: priyagupta108/setup-python@fix/manifest-fetch-1318
         with:
-          python-version: '3.10.0'
+          python-version: '3.14'
 
       - name: Verify install succeeded via fallback
         run: |
