@@ -16,6 +16,6 @@ jobs:
         uses: priyagupta108/setup-python@fix/manifest-fetch-1318
         with:
           python-version: '3.9'
-          check=latest: true
+          check-latest: true
       - name: Run main script
         run: python main.py
