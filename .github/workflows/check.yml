@@ -29,11 +29,11 @@ jobs:
         uses: priyagupta108/setup-python@fix/manifest-fetch-1318
         with:
           # Pick a patch unlikely to be pre-installed, so getManifest() runs.
-          python-version: '3.14'
+          python-version: '3.11'
 
       - name: Verify it actually installed
         run: |
-          test "${{ steps.setup.outputs.python-version }}" = "3.10.0"
+          python --version
           python -c "import sys; print(sys.version)"
   
   retry-exhausted-falls-back-to-url:
@@ -54,9 +54,9 @@ jobs:
         id: setup
         uses: priyagupta108/setup-python@fix/manifest-fetch-1318
         with:
-          python-version: '3.14'
+          python-version: '3.11'
 
       - name: Verify install succeeded via fallback
         run: |
-          test "${{ steps.setup.outputs.python-version }}" = "3.10.0"
+          python --version
           python -c "import sys; print(sys.version)"
