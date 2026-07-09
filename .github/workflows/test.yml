@@ -1,0 +1,15 @@
+name: Test run
+on: [workflow_dispatch]
+jobs:
+  test-python:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+      - name: Run main script
+        run: python main.py
