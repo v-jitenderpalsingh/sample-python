@@ -25,7 +25,7 @@ jobs:
 
       - name: Setup Python (force manifest fetch)
         id: setup
-        uses: priyagupta108/setup-python@manifest-fetch-retry
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'   # range -> resolves to newest 3.11.x in manifest
           check-latest: true       # forces getManifest() even if 3.11 is pre-installed
@@ -51,7 +51,7 @@ jobs:
 
       - name: Setup Python (must use URL fallback)
         id: setup
-        uses: priyagupta108/setup-python@manifest-fetch-retry
+        uses: actions/setup-python@v6
         with:
           python-version: '3.13'
           check-latest: true
