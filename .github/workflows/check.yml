@@ -1,7 +1,6 @@
 name: Test fetchValidManifest (transient failure)
 
-on:
-  workflow_dispatch:
+on: [push, workflow_dispatch]
 
 jobs:
   retry-recovers:
@@ -20,7 +19,7 @@ jobs:
       - name: Start blackout (api.github.com -> 127.0.0.1)
         run: |
           echo "127.0.0.1 api.github.com" | sudo tee -a /etc/hosts
-          ( sleep 4.5 && sudo sed -i '/127\.0\.0\.1 api\.github\.com/d' /etc/hosts && echo "RESTORED at $(date +%T.%N)" ) &
+          ( sleep 5.5 && sudo sed -i '/127\.0\.0\.1 api\.github\.com/d' /etc/hosts && echo "RESTORED at $(date +%T.%N)" ) &
           disown
           echo "BLOCKED  at $(date +%T.%N)"
 
