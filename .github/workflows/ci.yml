@@ -16,17 +16,14 @@ jobs:
         uses: priya-kinthali/setup-python@test-1079-new
         with:
           python-version: |
-            3.10
             3.13
             3.14
       - name: Run main script
         run: |
           which python
-          which python3.10
           which python3.13
           which python3.14
           echo ""
           python --version
-          python3.10 --version
           python3.13 --version
           python3.14 --version
