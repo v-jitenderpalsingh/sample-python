@@ -2,14 +2,31 @@ name: Test run
 on: [workflow_dispatch]
 jobs:
   test-python:
-    runs-on: self-hosted
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.14'
+          python-version: |
+            3.10
+            3.13
+            3.14
       - name: Run main script
-        run: python main.py
+        run: |
+          which python
+          which python3.10
+          which python3.13
+          which python3.14
+          echo ""
+          python --version
+          python3.10 --version
+          python3.13 --version
+          python3.14 --version
