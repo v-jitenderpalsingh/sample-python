@@ -16,8 +16,8 @@ jobs:
         uses: priya-kinthali/setup-python@test-1079-new
         with:
           python-version: |
-            3.13.11
-            3.14.2
+            3.13.14
+            3.14.6
       - name: Run main script
         run: |
           which python
