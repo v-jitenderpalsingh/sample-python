@@ -17,12 +17,20 @@ jobs:
             mv "${{ runner.tool_cache }}" "${{ runner.tool_cache }}.old"
             mkdir -p "${{ runner.tool_cache }}"
       
-      - name: Set up Python
+      - name: Setup Python
         uses: priya-kinthali/setup-python@test-1079-new
         with:
           python-version: |
             3.13.14
             3.14.6
+
+      - name: Setup Python again
+        uses: priya-kinthali/setup-python@test-1079-new
+        with:
+          python-version: |
+            3.13.14
+            3.14.6
+            
       - name: Run main script
         run: |
           which python
