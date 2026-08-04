@@ -10,14 +10,14 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v7
     - uses: actions/setup-python@v7
       with:
         python-version: 'pypy-3.11'
-    - name: Show pip version on ${{ matrix.os }}
-      run: |
-        python -m pip --version
     - name: Downgrade pip
       run: |
+        python -m pip --version
         python -m pip install "pip==26.1.2"
     - name: Use pip
       run: |
