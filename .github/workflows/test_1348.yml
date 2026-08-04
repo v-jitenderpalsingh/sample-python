@@ -1,0 +1,25 @@
+name: pip bug test
+on: [push, workflow_dispatch]
+
+jobs:
+  test:
+    name: Demonstrate PyPy pip issue
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+    - uses: actions/setup-python@v7
+      with:
+        python-version: 'pypy-3.11'
+    - name: Show pip version on ${{ matrix.os }}
+      run: |
+        python -m pip --version
+    - name: Downgrade pip
+      run: |
+        python -m pip install "pip==26.1.2"
+    - name: Use pip
+      run: |
+        python -m pip --version
+        python -m pip install -U requests
