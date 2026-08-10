@@ -1,15 +1,54 @@
 name: Test run
-on: [workflow_dispatch]
+on: [push, workflow_dispatch]
 jobs:
   test-python:
-    runs-on: self-hosted
+    name: Demonstrate PyPy pip issue on test branch
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['pypy3.11-v7.3.20', '3.14.5']
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-      
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.14'
-      - name: Run main script
-        run: python main.py
+    - name: Checkout code
+      uses: actions/checkout@v7
+
+    - uses: v-jitenderpalsingh/setup-python@test-1348
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Downgrade pip
+      run: |
+        python -m pip --version
+        python -m pip install "pip==26.1.2"
+
+    - name: Use pip
+      run: |
+        python -m pip --version
+        python -m pip install -U requests
+
+  test-python-v7:
+    name: Demonstrate PyPy pip issue on v7 branch
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['pypy3.11-v7.3.20', '3.14.5']
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v7
+
+    - uses: actions/setup-python@v7
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Downgrade pip
+      run: |
+        python -m pip --version
+        python -m pip install "pip==26.1.2"
+
+    - name: Use pip
+      run: |
+        python -m pip --version
+        python -m pip install -U requests
