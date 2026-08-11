@@ -1,5 +1,5 @@
 name: pip bug test
-on: [workflow_dispatch]
+on: [push, workflow_dispatch]
 
 jobs:
   test:
@@ -9,22 +9,27 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['pypy3.11-v7.3.20', '3.14.5']
+        python-version: ['pypy3.11-v7.3.20']
     steps:
     - name: Checkout code
       uses: actions/checkout@v7
     - uses: actions/setup-python@v7
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Downgrade pip
+    
+    - name: Create virtual environment
       run: |
-        python -m pip --version
-        python -m pip install --force-reinstall --no-cache-dir "pip==26.1.2"
-
-    - name: Check pip version
-      run: |
-        python -m pip --version 
+        python -m venv venv
 
     - name: Use pip
       run: |
+        if [ "${{ matrix.os }}" == "windows-latest" ]; then
+          venv\Scripts\activate
+        else
+          source venv/bin/activate
+        fi
+        python -m pip --version
+        python -m pip install "pip==26.1.2"
+        python -m pip --version
         python -m pip install -U requests
+        deactivate
