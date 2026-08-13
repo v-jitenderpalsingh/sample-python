@@ -10,9 +10,9 @@ jobs:
 
     - uses: deadsnakes/action@v3.2.0
       with:
-        python-version: "3.16-dev"
+        python-version: "3.16"
 
     - name: Check Python version
       run: |
-        python -VVV
+        python --version --version
         pip --version
