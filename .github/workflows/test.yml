@@ -8,7 +8,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v7
 
-    - uses: actions/setup-python@v7
+    - uses: lmvysakh/setup-python@update_error_message
       with:
         python-version: "3.13"
         cache: 'pip'
