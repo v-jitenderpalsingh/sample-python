@@ -19,5 +19,7 @@ jobs:
 
     - name: Use pip
       run : |
+        python3 -m pip list
         python -m pip install pip==26.1.2
+        python3 -m pip list
         python -m pip install requests
