@@ -1,20 +1,17 @@
 name: Test run
-on: [workflow_dispatch]
+on: [push, workflow_dispatch]
 jobs:
   test-python:
-    name: Check nightly
+    name: Check issue 1352
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v7
 
-    - uses: lmvysakh/setup-python@update_error_message
+    - uses: actions/setup-python@v7
       with:
-        python-version: "3.13"
-        cache: 'pip'
-        cache-dependency-path: 'temp/testing/path'
+        python-version: graalpy-25
 
     - name: Check Python version
       run: |
-        python --version --version
-        pip --version
+        python --version
