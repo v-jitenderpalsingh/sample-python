@@ -10,7 +10,8 @@ jobs:
 
     - uses: actions/setup-python@v7
       with:
-        python-version: graalpy-25.3
+        python-version: graalpy-25
+        check-latest: true
 
     - name: Check Python version
       run: |
