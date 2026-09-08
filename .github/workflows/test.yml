@@ -2,18 +2,22 @@ name: Test run
 on: [push, workflow_dispatch]
 jobs:
   test-python:
-    name: Check issue 1352
-    runs-on: ubuntu-latest
+    name: Check Python logs
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v7
 
     - uses: actions/setup-python@v7
       with:
-        python-version: graalpy-25
+        python-version: "3.14"
 
     - name: Check Python version
       run: |
         python --version
-        which python
-        
+        python main.py
