@@ -1,6 +1,6 @@
 name: Test Python CPU compatibility
 
-on: workflow_dispatch
+on: [push, workflow_dispatch]
 
 jobs:
   test:
@@ -16,16 +16,16 @@ jobs:
       - name: test python version
         run: python --version
 
-      # - name: Install test tools
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y qemu-user binutils
+      - name: Install test tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-user binutils
 
-      # - name: Inspect Python CPU requirements
-      #   run: readelf -n "$pythonLocation/bin/python3.12"
+      - name: Inspect Python CPU requirements
+        run: readelf -n "$pythonLocation/bin/python3.12"
 
-      # - name: Test Haswell CPU
-      #   run: qemu-x86_64 -cpu Haswell "$pythonLocation/bin/python3.12" -S -c pass
+      - name: Test Haswell CPU
+        run: qemu-x86_64 -cpu Haswell "$pythonLocation/bin/python3.12" -S -c pass
 
-      # - name: Test older Westmere CPU
-      #   run: qemu-x86_64 -cpu Westmere "$pythonLocation/bin/python3.12" -S -c pass
+      - name: Test older Westmere CPU
+        run: qemu-x86_64 -cpu Westmere "$pythonLocation/bin/python3.12" -S -c pass
