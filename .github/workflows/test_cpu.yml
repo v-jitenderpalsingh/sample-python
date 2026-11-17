@@ -26,10 +26,10 @@ jobs:
           sudo apt-get install -y qemu-user binutils
 
       - name: Inspect Python CPU requirements
-        run: readelf -n "$pythonLocation/bin/python3.12"
+        run: readelf -n "$pythonLocation/bin/python3.14"
 
       - name: Test Haswell CPU
-        run: qemu-x86_64 -cpu Haswell "$pythonLocation/bin/python3.12" -S -c pass
+        run: qemu-x86_64 -cpu Haswell "$pythonLocation/bin/python3.14" -S -c pass
 
       - name: Test older Westmere CPU
-        run: qemu-x86_64 -cpu Westmere "$pythonLocation/bin/python3.12" -S -c pass
+        run: qemu-x86_64 -cpu Westmere "$pythonLocation/bin/python3.14" -S -c pass
