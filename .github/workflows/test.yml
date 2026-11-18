@@ -1,7 +1,7 @@
 name: Test run
 on: [push, workflow_dispatch]
 jobs:
-  test-python-3-10-11:
+  test-python:
     name: Check Python logs
     runs-on: ${{ matrix.os }}
     strategy:
@@ -22,7 +22,7 @@ jobs:
         python --version
         python main.py
 
-  test-python-3-11-9:
+  test-python1:
     name: Check Python logs
     runs-on: ${{ matrix.os }}
     strategy:
@@ -43,7 +43,7 @@ jobs:
         python --version
         python main.py
 
-  test-python-3-12- 10:
+  test-python2:
     name: Check Python logs
     runs-on: ${{ matrix.os }}
     strategy:
