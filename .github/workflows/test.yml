@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-slim, ubuntu-latest]
+        os: [ubuntu-slim, ubuntu-24.04]
 
     steps:
     - name: Checkout code
@@ -22,3 +22,6 @@ jobs:
       run: |
         python --version
         python main.py
+    
+    - name: Install dependencies
+      run: pip install -r requirements.txt
