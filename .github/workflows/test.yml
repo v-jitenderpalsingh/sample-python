@@ -7,13 +7,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-slim, ubuntu-24.04]
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v7
+      uses: actions/checkout@main
 
-    - uses: actions/setup-python@v7
+    - uses: actions/setup-python@main
       with:
         python-version: "3.14"
         cache: "pip"
@@ -25,3 +25,14 @@ jobs:
     
     - name: Install dependencies
       run: pip install -r requirements.txt
+
+    - name: Setup Again
+      uses: actions/setup-python@main
+      with:
+        python-version: "3.14"
+        cache: "pip"
+        
+    - name: Check Python version Again
+      run: |
+        python --version
+        python main.py
